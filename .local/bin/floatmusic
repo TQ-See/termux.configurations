@@ -1,0 +1,7 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+am start \ 
+	-n com.termux.window/.TermuxFloatActivity \
+	-a com.termux.RUN_COMMAND \
+	--es com.termux.RUN_COMMAND_PATH "/data/data/com.termux/files/usr/bin/kew"
+

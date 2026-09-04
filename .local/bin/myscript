@@ -1,0 +1,19 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# =======================================
+#  MyScripts - Daftar Script Pribadi
+# =======================================
+
+echo "
+----------------------------------------
+📁  Lokasi: ../usr/bin/..
+----------------------------------------
+🧰  Daftar Script:
+----------------------------------------
+1. my script
+2. wall
+3. addalias <name> '<cmd>'
+4. imgcompress <path_folder> <lossy|lossless>
+5. bulkrename <path_folder> <new_name>
+5. bulkgray <path_folder>
+----------------------------------------
+"

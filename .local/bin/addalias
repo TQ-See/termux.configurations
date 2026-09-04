@@ -1,0 +1,39 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+# Pastikan minimal 2 argumen
+if [ $# -lt 2 ]; then
+  echo "Usage: addalias <alias_name> <command>"
+  exit 1
+fi
+
+name="$1"
+shift
+cmd="$*"
+
+# Tambahkan ke dua shell rc
+echo "alias $name='$cmd'" >> ~/.bashrc
+# echo "alias $name='$cmd'" >> ~/.zshrc
+echo "alias $name='$cmd'" >> ~/.config/fish/conf.d/aliases.fish
+
+# Deteksi shell aktif
+current_shell=$(readlink /proc/$$/exe 2>/dev/null || ps -p $$ -o comm= | tr -d '-' | xargs)
+#shell=$(echo $0)
+
+case "$current_shell" in
+  zsh|*/zsh)
+    echo "✅ Alias '$name' ditambahkan ke ~/.zshrc"
+    source ~/.zshrc
+    ;;
+  bash|*/bash)
+    echo "✅ Alias '$name' ditambahkan ke ~/.bashrc"
+    source ~/.bashrc
+    ;;
+  fish|*/fish)
+    echo "✅ Alias '$name' ditambahkan ke ~/.config/fish/config.fish"
+    source ~/.config/fish/config.fish
+    ;;
+  *)
+    echo "✅ Alias '$name' ditambahkan, tapi shell aktif tidak diketahui. ($current_shell)"
+    echo "Kamu bisa reload manual: source ~/.bashrc atau ~/.zshrc"
+    ;;
+esac

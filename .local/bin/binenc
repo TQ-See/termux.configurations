@@ -1,0 +1,5 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+mv /storage/emulated/0/.store/bin /storage/emulated/0/DCIM/bin 
+echo "successed!"
+

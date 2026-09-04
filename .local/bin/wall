@@ -1,0 +1,10 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# Folder wallpaper
+WALLPAPERS="$HOME/storage/internal/pictures/wallpaper"
+FILES=("$WALLPAPERS"/*)
+COUNT=${#FILES[@]}
+INDEX=$((RANDOM % COUNT))
+SELECTED="${FILES[$INDEX]}"
+
+# Terapkan wallpaper
+termux-wallpaper -f "$SELECTED"

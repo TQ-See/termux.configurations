@@ -1,0 +1,2 @@
+#!/data/data/com.termux/files/usr/bin/bash
+luajit /data/data/com.termux/files/home/.local/bin/LuaScripts/gemini.lua "$*"

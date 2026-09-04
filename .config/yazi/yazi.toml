@@ -1,0 +1,55 @@
+[mgr]
+# linemode = "size_and_mtime"
+ratio = [0, 3, 4]
+show_hidden = true
+show_symlink = true
+sort_by = "natural"
+sort_dirs_first = true
+sort_reverse = false
+title_format = ""
+
+[[opener.play]]
+desc = "open"
+for = "linux"
+orphan = true
+run = "termux-open %s"
+
+[[plugin.prepend_previewers]]
+run = 'piper -- eza -TL=2 --color=always --icons=always --group-directories-first --no-quotes -a "$1"'
+url = "*/"
+
+[[plugin.prepend_previewers]]
+mime = "application/*zip"
+run = "ouch"
+
+[[plugin.prepend_previewers]]
+mime = "application/x-tar"
+run = "ouch"
+
+[[plugin.prepend_previewers]]
+mime = "application/x-bzip2"
+run = "ouch"
+
+[[plugin.prepend_previewers]]
+mime = "application/x-7z-compressed"
+run = "ouch"
+
+[[plugin.prepend_previewers]]
+mime = "application/x-rar"
+run = "ouch"
+
+[[plugin.prepend_previewers]]
+mime = "application/x-xz"
+run = "ouch"
+
+[[plugin.prepend_previewers]]
+mime = "application/xz"
+run = "ouch"
+
+[[plugin.prepend_previewers]]
+run = 'piper -- CLICOLOR_FORCE=1 COLORTERM=truecolor glow -w=$w -s=dark "$1"'
+url = "*.md"
+
+[[plugin.prepend_previewers]]
+run = 'piper -- bat -p --color=always "$1"'
+url = "*.csv"

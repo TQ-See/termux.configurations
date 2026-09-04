@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+apt-mark showmanual | while read -r pkg; do
+  desc=$(apt show "$pkg" 2>/dev/null | sed -n 's/^Description: //p')
+  printf "%-20s %s\n" "$pkg" "| $desc"
+done

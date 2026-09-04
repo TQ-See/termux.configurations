@@ -1,0 +1,16 @@
+GEMINI_API: ENC[AES256_GCM,data:XfiM/9kU0YuJgiF+HIR1GhY5E8qeUwP7BfMyLKUeJ3IhEviDIscRDcZcuiVxzENueA/KvyE=,iv:77Ebubo9FVJ763B3F7y6mfGI9WXd1tTGp6PInu8+MRw=,tag:FToRWlQdK5kJMtlGUjliuw==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBKQ2ZqUjRocW1LWVJyTmZ5
+            eGczZ0tFYmFhK1JRbG9JZ3JCWEZPZFpMbmtrClRDWnpMYzcra1BuRDJnenVSWlFL
+            U2xnTzlMdDVqN3JyREVXMTdFb25WNVUKLS0tIFIzR05NSmlkaXltMmczS2NOK3Jj
+            Y0Q1MytpMjgzeWtGYUtNeHZkUDJTbUEKIQ+kpJfI7wuuC5TtU9HAqYqqOiCRXUtL
+            +0r7BZafa3jgxyBFPD1fMi9q9gtGpD8m9BSeO3wLa0b94Ek8sxktTw==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1ue7x86t7ng6es0z82ctx0h8r75cx58mdxr6xgttn9fclg3750vzql63l57
+    lastmodified: "2026-07-11T13:45:40Z"
+    mac: ENC[AES256_GCM,data:VM8f8T7NureIloh6zb5FrjoRujtd4Se+TX67YzOU51ObolPNt4W475joQJgyF7vOydrcLIdYO77S5dGzbocYBc9/Cl1MpAz5fzjocq61JyZzTVHniVCfCnyM5IV3jveo58azIw8YZUHC1jQnkmHQz8daehddbE756Pd8I0BRZbo=,iv:vuMgokI6RtInYJWwHsEkPt9yerE0Ca+BWVdoBfGONBg=,tag:Y8esCSscw4aQzwXHy56q6w==,type:str]
+    unencrypted_suffix: _unencrypted
+    version: 3.13.2

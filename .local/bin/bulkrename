@@ -1,0 +1,37 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# ============================================
+# Bulk Rename Script for Termux
+# Usage: bulkrename /path/to/folder NewName
+# ============================================
+
+# Pastikan argumen cukup
+if [ $# -ne 2 ]; then
+  echo "Usage: bulkrename <folder_path> <new_base_name>"
+  exit 1
+fi
+
+folder="$1"
+basename="$2"
+
+# Pastikan folder ada
+if [ ! -d "$folder" ]; then
+  echo "Error: Folder '$folder' tidak ditemukan!"
+  exit 1
+fi
+
+cd "$folder" || exit
+
+n=1
+for f in *; do
+  [ -f "$f" ] || continue
+
+  ext="${f##*.}"
+  ext="${ext,,}"
+
+  newname="${basename}${n}.${ext}"
+  echo "→ $f → $newname"
+  mv -- "$f" "$newname"
+  ((n++))
+done
+
+echo "✅ Selesai! Total diubah: $((n-1)) file."

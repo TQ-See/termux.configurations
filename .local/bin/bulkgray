@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# ======================================
+# bulkgray - Convert all images to grayscale
+# Without quality loss, safe output
+# ======================================
+
+set -euo pipefail
+
+# Cek argumen
+if [[ $# -lt 1 ]]; then
+    echo "Usage: bulkgray <folder_path>"
+    exit 1
+fi
+
+folder="$1"
+
+# Cek apakah folder ada
+if [[ ! -d "$folder" ]]; then
+    echo "Error: Folder '$folder' tidak ditemukan!"
+    exit 1
+fi
+
+# Cek ImageMagick
+if ! command -v magick >/dev/null 2>&1 && ! command -v mogrify >/dev/null 2>&1; then
+    echo "ImageMagick belum terinstall. Jalankan:"
+    echo "    pkg install imagemagick"
+    exit 1
+fi
+
+# Buat folder output
+output="$folder/grayscale"
+mkdir -p "$output"
+
+echo "🎨 Mengonversi gambar di '$folder' menjadi grayscale..."
+
+# Loop semua gambar umum
+shopt -s nullglob
+for f in "$folder"/*.{jpg,jpeg,png,webp,bmp,tiff}; do
+    [ -f "$f" ] || continue
+    base=$(basename "$f")
+    magick "$f" -colorspace Gray -quality 100 "$output/$base"
+    echo "✔️  $base"
+done
+
+echo "✅ Semua gambar selesai dikonversi!"
+echo "📁 Hasil tersimpan di: $output"

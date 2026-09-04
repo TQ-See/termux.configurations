@@ -1,0 +1,29 @@
+[[mgr.prepend_keymap]]
+desc = "Mount drives"
+on = "M"
+run = "plugin mount"
+
+[[mgr.prepend_keymap]]
+desc = "Restore last deleted files/folders"
+on = "u"
+run = "plugin restore"
+
+[[mgr.prepend_keymap]]
+desc = "Archive selected files"
+on = ["-", "c"]
+run = "plugin compress"
+
+[[mgr.prepend_keymap]]
+desc = "Archive with password"
+on = ["-", "p"]
+run = "plugin compress -p"
+
+[[mgr.prepend_keymap]]
+desc = "Archive with password and header"
+on = ["-", "h"]
+run = "plugin compress -ph"
+
+[[mgr.prepend_keymap]]
+desc = "Archive with compression level"
+on = ["-", "l"]
+run = "plugin compress -l"

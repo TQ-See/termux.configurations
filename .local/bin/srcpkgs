@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+# src - show description for manual-installed apt packages
+
+if [ -z "$1" ]; then
+  echo "usage: src <package-name>"
+  exit 1
+fi
+
+pkg="$1"
+
+if apt-mark showmanual | grep -qx "$pkg"; then
+  apt show "$pkg"
+else
+  echo "✗ Package '$pkg' is not marked as manually installed"
+  echo "  (or package does not exist)"
+fi

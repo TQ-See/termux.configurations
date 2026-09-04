@@ -1,0 +1,80 @@
+#!/usr/bin/env sh
+set -eu
+
+REPO="$HOME/storage/termux-app"
+SECRETS="$REPO/.secrets/github.yaml"
+
+# Pastikan file ada
+[ -f "$SECRETS" ] || {
+    echo "Secrets file tidak ditemukan:"
+    echo "  $SECRETS"
+    exit 1
+}
+
+# Pastikan bisa didekripsi
+if ! secret="$(sops -d "$SECRETS")"; then
+    echo "Gagal mendekripsi secrets."
+    exit 1
+fi
+
+mkdir -p "$HOME/.ssh"
+
+# Ambil semua nilai dari hasil decrypt
+name="$(printf '%s' "$secret" | yq -r '.name')"
+email="$(printf '%s' "$secret" | yq -r '.email')"
+credential="$(printf '%s' "$secret" | yq -r '.credential')"
+private_key="$(printf '%s' "$secret" | yq -r '.private_key')"
+public_key="$(printf '%s' "$secret" | yq -r '.public_key')"
+known_host="$(printf '%s' "$secret" | yq -r '.known_host')"
+
+# ~/.gitconfig
+cat > "$HOME/.gitconfig" <<EOF
+[user]
+    name = $name
+    email = $email
+
+[credential]
+    helper = store
+EOF
+
+# ~/.config/jj/config.toml
+mkdir -p ~/.config/jj
+cat > "$HOME/.config/jj/config.toml" <<EOF
+#:schema https://jj-vcs.github.io/jj/latest/config-schema.json
+
+[user]
+name = "$name"
+email = "$email"
+
+[ui]
+default-command = "log"
+
+EOF
+
+# ~/.git-credentials
+printf '%s\n' "$credential" > "$HOME/.git-credentials"
+
+# SSH
+printf '%s\n' "$private_key" > "$HOME/.ssh/id_ed25519"
+printf '%s\n' "$public_key" > "$HOME/.ssh/id_ed25519.pub"
+printf '%s\n' "$known_host" > "$HOME/.ssh/known_hosts"
+
+chmod 700 "$HOME/.ssh"
+chmod 600 "$HOME/.ssh/id_ed25519"
+chmod 644 "$HOME/.ssh/id_ed25519.pub"
+chmod 644 "$HOME/.ssh/known_hosts"
+chmod 600 "$HOME/.git-credentials"
+
+echo "✓ Git config dibuat"
+echo "✓ Git credentials dibuat"
+echo "✓ SSH key dipasang"
+
+# Tes SSH (opsional)
+if command -v ssh >/dev/null 2>&1; then
+    echo
+    echo "Menguji koneksi GitHub..."
+    ssh -T git@github.com || true
+fi
+
+echo
+echo "Selesai."

@@ -1,0 +1,295 @@
+#!/usr/bin/env bash
+# ================================================
+# Vim Cheatsheet - Bagian 1: Gerakan & Dasar
+# ================================================
+
+# Warna
+# PENTING: gunakan $'...' (ANSI-C quoting) supaya \e
+# benar-benar menjadi byte ESC, bukan teks literal.
+bold=$'\e[1m'
+reset=$'\e[0m'
+cyan=$'\e[36m'
+yellow=$'\e[33m'
+green=$'\e[32m'
+
+pager() {
+# Heredoc tetap pakai 'EOF' (quoted) supaya backtick (`)
+# yang muncul di teks (mis. `a / y`a) tidak dieksekusi
+# sebagai command substitution oleh bash.
+#
+# Substitusi ${bold}, ${cyan}, dst. dilakukan lewat sed
+# setelah heredoc, bukan lewat ekspansi shell.
+cat <<'EOF' | sed \
+  -e "s/\${bold}/${bold}/g" \
+  -e "s/\${reset}/${reset}/g" \
+  -e "s/\${cyan}/${cyan}/g" \
+  -e "s/\${yellow}/${yellow}/g" \
+  -e "s/\${green}/${green}/g" | less -R
+${bold}${cyan}VIM CHEATSHEET${reset}
+=================================================
+${green}BAGIAN 1 - GERAKAN & DASAR${reset}
+=================================================
+
+${bold}${yellow}GLOBAL${reset}
+-------------------------------------------------
+:h [help] keyword   - buka bantuan
+:sav[eas] file      - simpan sebagai
+:clo[se]            - tutup panel saat ini
+:ter[minal]         - buka terminal
+K                   - buka halaman manual
+Tip: jalankan ${yellow}vimtutor${reset} untuk
+belajar dasar Vim.
+
+${bold}${yellow}GERAKAN KURSOR${reset}
+-------------------------------------------------
+h   - kiri
+j   - bawah
+k   - atas
+l   - kanan
+gj  - bawah (multi-line)
+gk  - atas (multi-line)
+H   - ke atas layar
+M   - ke tengah layar
+L   - ke bawah layar
+w/W - ke awal kata berikut
+e/E - ke akhir kata berikut
+b/B - ke awal kata sebelumnya
+ge/gE - ke akhir kata sebelumnya
+%   - ke pasangan tanda kurung
+0   - ke awal baris
+^   - ke karakter pertama non-kosong
+$   - ke akhir baris
+g_  - ke karakter terakhir non-kosong
+gg  - ke baris pertama
+G   - ke baris terakhir
+5gg / 5G - ke baris ke-5
+gd / gD  - ke deklarasi lokal/global
+fx / tx  - ke karakter x berikut / sebelum
+Fx / Tx  - ke karakter x sebelumnya / sesudah
+; / ,    - ulangi f,t,F,T maju / mundur
+{ / }    - ke paragraf / blok sebelum / sesudah
+zz / zt / zb - posisikan kursor tengah/atas/bawah
+Ctrl+e / y   - geser layar ±1 baris
+Ctrl+b / f   - geser layar ±1 halaman
+Ctrl+d / u   - geser layar ±½ halaman
+
+Tip: Awali dengan angka
+misal: 4j → turun 4 baris
+
+${bold}${yellow}MODE INSERT (PENYISIPAN)${reset}
+-------------------------------------------------
+i   - sisip sebelum kursor
+I   - sisip di awal baris
+a   - tambah setelah kursor
+A   - tambah di akhir baris
+o   - baris baru di bawah
+O   - baris baru di atas
+ea  - sisip di akhir kata
+Ctrl+h - hapus karakter sebelum
+Ctrl+w - hapus kata sebelum
+Ctrl+j - baris baru di posisi kursor
+Ctrl+t - indent kanan satu shiftwidth
+Ctrl+d - indent kiri satu shiftwidth
+Ctrl+n / p - auto complete next/prev
+Ctrl+r x   - masukkan isi register x
+Ctrl+o x   - mode normal sementara
+Esc / Ctrl+c - keluar insert
+
+=================================================
+${green}BAGIAN 2 - INSERT & EDITING${reset}
+=================================================
+
+${bold}${yellow}MENGEDIT TEKS${reset}
+-------------------------------------------------
+r / R   - ganti 1 / banyak karakter
+J / gJ  - gabung baris (dengan / tanpa spasi)
+gwip    - reflow paragraf
+g~      - ubah kapitalisasi (toggle)
+gu / gU - ubah ke huruf kecil / besar
+cc / C  - ubah seluruh baris / ke akhir baris
+ciw / cw / ce - ubah kata penuh / sisa kata
+s / S   - hapus & ganti (karakter / baris)
+xp      - tukar dua huruf (cut+paste)
+u / U   - undo / undo seluruh baris
+Ctrl+r  - redo
+.       - ulangi perintah terakhir
+
+${bold}${yellow}MODE VISUAL${reset}
+-------------------------------------------------
+v / V      - pilih karakter / baris
+Ctrl+v     - pilih blok kolom
+o / O      - pindah ujung area / sudut blok
+aw / ab / aB / at - pilih kata / () / {} / <>
+ib / iB / it - bagian dalam () / {} / <>
+Esc / Ctrl+c - keluar visual mode
+
+Tip: tanda ( ) dan { } bisa saling
+diganti untuk blok.
+
+${bold}${yellow}PERINTAH VISUAL${reset}
+-------------------------------------------------
+> / <   - geser kanan / kiri
+y / d   - salin / hapus teks
+~       - ubah kapitalisasi
+u / U   - ubah ke kecil / besar
+
+${bold}${yellow}REGISTER${reset}
+-------------------------------------------------
+:reg      - tampilkan isi register
+"xy / "xp - salin / tempel register x
+"+y / "+p - gunakan clipboard sistem
+
+Tip:
+Register disimpan di ~/.viminfo
+dan dimuat ulang otomatis.
+
+Register khusus:
+"0  - yank terakhir
+"   - unnamed (hapus / yank)
+%   - nama file saat ini
+#   - file alternatif
+* + - clipboard (X11)
+/   - pola pencarian terakhir
+:   - command terakhir
+.   - teks terakhir disisipkan
+-   - hapus kecil (kurang 1 baris)
+=   - ekspresi register
+_   - black hole register
+
+${bold}${yellow}MARKS & POSISI${reset}
+-------------------------------------------------
+:marks     - daftar marks
+ma         - set mark a
+`a / y`a   - lompat / yank ke mark a
+`0 / '"`   - posisi keluar / edit terakhir
+`. / ``    - posisi perubahan / lompatan
+:ju[mps]   - daftar lompatan
+Ctrl+i / o - lompat maju / mundur
+:changes   - daftar perubahan
+g, / g;    - maju / mundur perubahan
+Ctrl+]     - lompat ke tag di bawah kursor
+
+Tip:
+Gunakan ${yellow}\`${reset} untuk posisi tepat,
+atau ${yellow}'${reset} untuk awal baris mark.
+
+=================================================
+${green}BAGIAN 3 - VISUAL LANJUTAN, MACRO, CUT & PASTE${reset}
+=================================================
+
+${bold}${yellow}MACRO${reset}
+-------------------------------------------------
+qa   - rekam macro ke register a
+q    - berhenti merekam
+@a   - jalankan macro a
+@@   - ulangi macro terakhir
+
+${bold}${yellow}CUT & PASTE${reset}
+-------------------------------------------------
+yy / 2yy - salin 1 / 2 baris
+yw / yiw / yaw - salin kata (posisi / penuh)
+y$ / Y   - salin ke akhir baris
+p / P    - tempel setelah / sebelum
+gp / gP  - tempel dan kursor di akhir teks
+dd / 2dd - hapus 1 / 2 baris
+dw / diw / daw - hapus kata (posisi / penuh)
+:3,5d    - hapus baris 3–5
+:.,$d    - hapus dari sini ke akhir file
+:.,1d    - hapus dari sini ke awal
+:g/{pat}/d   - hapus baris dg pola
+:g!/{pat}/d  - hapus baris tanpa pola
+d$ / D   - hapus ke akhir baris
+x        - hapus 1 karakter
+
+${bold}${yellow}INDENTASI${reset}
+-------------------------------------------------
+>> / <<   - geser kanan / kiri 1 shiftwidth
+>% / <%   - indent / de-indent blok () atau {}
+>ib / >at - indent bagian dalam () / <tag>
+3==       - re-indent 3 baris
+=% / =iB  - re-indent blok () / {}
+gg=G      - re-indent seluruh buffer
+]p        - paste + sesuaikan indentasi
+
+${bold}${yellow}TIP LANJUTAN${reset}
+-------------------------------------------------
+Gunakan ${yellow}>${reset} dan ${yellow}<${reset} di visual mode
+untuk geser cepat blok teks.
+
+Gunakan ${yellow}=G${reset} untuk merapikan semua
+kode dengan indentasi otomatis.
+
+${bold}${yellow}EXAMPLE${reset}
+-------------------------------------------------
+:10,20>   - geser kanan baris 10–20
+:%=       - auto-indent seluruh file
+:.,+3<    - geser kiri 4 baris mulai dari sini
+
+=================================================
+${green}BAGIAN 4 - SEARCH, REPLACE, TABS & EXIT${reset}
+=================================================
+
+${bold}${yellow}SEARCH & REPLACE${reset}
+-------------------------------------------------
+/pattern       - cari maju
+?pattern       - cari mundur
+\vpattern      - regex "very magic"
+n / N          - ulangi pencarian
+:%s/old/new/g  - ganti semua old → new
+:%s/old/new/gc - ganti dg konfirmasi
+:noh[lsearch]  - hapus highlight
+
+${bold}${yellow}SEARCH DALAM MULTI FILE${reset}
+-------------------------------------------------
+:vim[grep] /pat/ {file} - cari pola di banyak file
+contoh: :vimgrep /foo/ **/*
+:cn / :cp     - lompat hasil selanjutnya / sebelumnya
+:cope / :ccl  - buka / tutup daftar hasil
+
+${bold}${yellow}TABS${reset}
+-------------------------------------------------
+:tabnew [file]   - buka file di tab baru
+Ctrl+w T         - pindah split ke tab baru
+gt / gT          - tab berikut / sebelumnya
+#gt              - ke tab nomor #
+:tabm #          - pindah tab ke posisi #
+:tabc / :tabo    - tutup tab / hanya tab ini
+:tabdo cmd       - jalankan cmd di semua tab
+
+${bold}${yellow}SPLIT & WINDOW${reset}
+-------------------------------------------------
+:sp [file]     - split horizontal
+:vsp [file]    - split vertikal
+Ctrl+w s / v   - split cepat
+Ctrl+w h/j/k/l - pindah antar jendela
+Ctrl+w c / o   - tutup / hanya jendela ini
+Ctrl+w =       - samakan ukuran jendela
+
+${bold}${yellow}EXIT & SAVE${reset}
+-------------------------------------------------
+:w          - simpan
+:w !sudo tee % - simpan dg sudo
+:wq / :x / ZZ  - simpan & keluar
+:q / :q! / ZQ  - keluar / paksa keluar
+:wqa       - simpan & keluar semua tab
+
+${bold}${yellow}TIP TAMBAHAN${reset}
+-------------------------------------------------
+Gunakan ${yellow}:w !sudo tee %${reset}
+untuk menyimpan file root
+tanpa keluar dari Vim.
+
+Gunakan ${yellow}:q!${reset} untuk keluar
+tanpa menyimpan perubahan.
+
+Gunakan ${yellow}:tabdo q${reset}
+untuk menutup semua tab terbuka.
+
+=================================================
+${green}SELESAI 🎉${reset}
+=================================================
+${cyan}Terima kasih telah menggunakan vim-cheatsheet!${reset}
+EOF
+}
+
+pager
