@@ -5,7 +5,7 @@ BASE_DIR="$HOME"
 SRC_DIR="$BASE_DIR/storage/termux-app"
 
 # Gunakan Bash Array untuk dependensi
-DEPENDENCIES=(termux-api fish ripgrep which curl wget fzf eza git tree yq fastfetch htop glow)
+DEPENDENCIES=(termux-api fish ripgrep which curl wget fzf eza git tree yq fastfetch htop glow zip)
 TEMP_DEPS=(luajit yazi file sops age glow yt-dlp zoxide tur-repo)
 
 # 2. Gunakan satu array berisi path relatif

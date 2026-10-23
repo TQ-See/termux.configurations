@@ -96,6 +96,7 @@ end
     local content = KTP_f:read("*a")
     KTP_f:close()
 
+    print(KTP_Header)
     print(content .. "\n")
     print("--------------------------------------------")
     print("Kegabutan HaQiQi ---------------------------")----------------------------")
