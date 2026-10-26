@@ -70,7 +70,7 @@ create_symlinks() {
 
     # Clone repositori
     if [[ ! -d "$SRC_DIR/.git" ]]; then
-        git clone --single-branch --depth 1 -b config https://github.com/TQ-See/termux.configurations.git "$SRC_DIR"
+        git clone --single-branch --depth 1 -b main https://github.com/TQ-See/termux.configurations.git "$SRC_DIR"
     fi
 
     for item in "${ITEMS[@]}"; do
