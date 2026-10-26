@@ -80,10 +80,18 @@ end
 io.write("\nEnter filename (e.g. 001.jpg or ComicInfo.xml): ")
 local target_file = io.read()
 
-if not target_file or target_file == "" then
-  print("[Abort] No filename entered.")
-  sh("rm -rf " .. quote(temp_dir))
-  os.exit(0)
+-- Fallback jika input kosong
+if not target_file or target_file:match("^%s*$") then
+  target_file = "ComicInfo.xml"
+
+  -- Pastikan ComicInfo.xml tersedia di arsip
+  if not file_exists(temp_dir .. "/" .. target_file) then
+    print("[Abort] no filename entered.")
+    sh("rm -rf " .. quote(temp_dir))
+    os.exit(0)
+  end
+
+  print("[Fallback] Using ComicInfo.xml")
 end
 
 local full_target_path = temp_dir .. "/" .. target_file
@@ -107,15 +115,16 @@ elseif choice == "e" then
     print("[Info] File not found.")
     io.write("Create new file? (y/n): ")
     local ans = io.read()
-    if ans:lower() == 'y' then
-      sh("touch " .. quote(full_target_path)) -- buat file kosong
+
+    if ans and ans:lower() == "y" then
+      sh("touch " .. quote(full_target_path))
     else
       print("[Abort] Cancelled.")
       sh("rm -rf " .. quote(temp_dir))
       os.exit(0)
     end
   end
-  
+
   -- Buka Editor
   local editor = os.getenv("EDITOR") or "vim"
   print("[Edit] Opening " .. editor .. "...")
